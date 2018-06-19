@@ -41,6 +41,10 @@ if [ -z "${DRIVE_DESTINATION}" ]; then
   DRIVE_DESTINATION=""
 fi
 
+if [ -z "${RCLONE_OPTS}" ]; then
+  RCLONE_OPTS="--config /config/rclone.conf"
+fi
+
 
 # Now write these all to case file that can be sourced
 # by then cron job - we need to do this because
@@ -56,6 +60,7 @@ export PGDATABASE=$PGDATABASE
 export DUMPPREFIX=$DUMPPREFIX
 export ODOO_FILES=$ODOO_FILES
 export DRIVE_DESTINATION=$DRIVE_DESTINATION
+export RCLONE_OPTS=$RCLONE_OPTS
  " > /pgenv.sh
 
 echo "Start script running with these environment options"
