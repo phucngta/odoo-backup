@@ -6,7 +6,7 @@ source /pgenv.sh
 #set | grep PG >> /var/log/cron.log
 
 if [ $ODOO_FILES -eq 1 ]; then
-  MYDATE=`date +%d-%B-%Y`
+  MYDATE=`date +%Y-%B-%d`
   MONTH=$(date +%B)
   YEAR=$(date +%Y)
   MYBASEDIR=/var/backup

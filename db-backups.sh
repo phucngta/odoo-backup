@@ -5,7 +5,7 @@ source /pgenv.sh
 #echo "Running with these environment options" >> /var/log/cron.log
 #set | grep PG >> /var/log/cron.log
 
-MYDATE=`date +%d-%B-%Y-%H`
+MYDATE=`date +%Y-%B-%d-%H`
 MONTH=$(date +%B)
 YEAR=$(date +%Y)
 MYBASEDIR=/var/backup
