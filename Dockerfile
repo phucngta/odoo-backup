@@ -4,7 +4,7 @@ MAINTAINER federico.facca@martel-innovate.com
 RUN go get -u -v github.com/ncw/rclone
 RUN go clean
 RUN apt-get update
-RUN apt-get install -y cron postgresql-client-9.6
+RUN apt-get install -y cron postgresql-client-9.6 nano
 RUN apt-get clean autoclean
 RUN apt-get autoremove -y
 RUN rm -rf /var/lib/{apt,dpkg,cache,log}/
