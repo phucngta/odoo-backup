@@ -26,7 +26,7 @@ if [ $ODOO_FILES -eq 1 ]; then
 
   if [ -n "${DRIVE_DESTINATION}" ]; then
     ACTION="Copy $FILENAME to destination"
-    /go/bin/rclone $RCLONE_OPTS copy $FILENAME $DRIVE_DESTINATION --retries 100 --retries-sleep 60s --user-agent "ISV|rclone.org|rclone/v1.42"
+    /go/bin/rclone copy $FILENAME $DRIVE_DESTINATION --retries 100 --retries-sleep 60s --user-agent "ISV|rclone.org|rclone/v1.42" $RCLONE_OPTS
     if [ $? -eq 0 ]; then
       echo "OK: " $ACTION " - " $(date)
     else
