@@ -60,7 +60,7 @@ export PGDATABASE=$PGDATABASE
 export DUMPPREFIX=$DUMPPREFIX
 export ODOO_FILES=$ODOO_FILES
 export DRIVE_DESTINATION=$DRIVE_DESTINATION
-export RCLONE_OPTS=$RCLONE_OPTS
+export RCLONE_OPTS='$RCLONE_OPTS'
  " > /pgenv.sh
 
 echo "Start script running with these environment options"
