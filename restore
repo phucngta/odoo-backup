@@ -1,0 +1,85 @@
+#!/bin/bash
+#
+# Usage:
+#   restore <DB_RESTORE> <HOUR> <DATE> <MONTH> <YEAR>
+#
+#########################################################################################
+
+HOUR=$(date +%H)
+DATE=$(date +%d)
+MONTH=$(date +%B)
+YEAR=$(date +%Y)
+
+if [ -z $2 ]
+  then
+    echo "Error! Database restore not set !"
+    exit 2
+fi
+
+if [ ! -z $3 ]; then
+  HOUR=$3
+fi
+
+if [ ! -z $4 ]; then
+  DATE=$4
+fi
+
+if [ ! -z $5 ]; then
+  MONTH=$5
+fi
+
+if [ ! -z $6 ]; then
+  YEAR=$6
+fi
+
+MYBASEDIR=/var/backup
+MYBACKUPDIR=${MYBASEDIR}/${YEAR}/${MONTH}
+
+if [ ! -d ${MYBACKUPDIR} ]
+  then
+    echo "Error! backup directory not found!"
+    exit 2
+fi
+
+
+DBFILE=${MYBACKUPDIR}/${DUMPPREFIX}_${DB_RESTORE}.${YEAR}-${MONTH}-${DATE}-${HOUR}.tar.gz
+FILESTORE=${MYBACKUPDIR}/varlib.${YEAR}-${MONTH}-${DATE}.tar.gz
+
+if [ ! -f ${FILESTORE} ]
+  then
+    echo "Error! File ${FILESTORE} not found!"
+    exit 2
+fi
+
+if [ ! -f ${DBFILE} ]
+  then
+    echo "Error! File ${DBFILE} not found!"
+    exit 2
+fi
+
+DB_RESTORE_NAME=$DB_RESTORE.${YEAR}-${MONTH}-${DATE}-${HOUR}
+
+echo "Restore files..."
+tar xvfz ${FILESTORE} -C /tmp --exclude='odoo.conf' --exclude 'odoo-dev.conf' --exclude 'odoo-debug.conf'
+cp -R /tmp/odoo/filestore/${DB_RESTORE} /var/lib/odoo/filestore/$DB_RESTORE_NAME
+
+if [ $? -ne 0 ]
+  then
+    echo "Error! Restore of files failed!"
+    exit 2
+fi
+echo "Files restored"
+
+echo "Create new database ${DB_RESTORE_NAME}"
+createdb -h $PGHOST -U $PGUSER -O $PGUSER $DB_RESTORE_NAME
+
+echo "Restore to new created database ${DB_RESTORE_NAME}"
+gzip -d ${DBFILE} | pg_restore -U $PGUSER -h $PGHOST -d ${DB_RESTORE_NAME}
+
+
+if [ $? -ne 0 ]
+  then
+    echo "Error! DB restore failed!"
+    exit 2
+fi
+echo "Restore finished"

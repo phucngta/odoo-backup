@@ -20,6 +20,12 @@ echo "Backup running to $MYBACKUPDIR"
 #
 
 DBLIST=`psql -l | awk '{print $1}' | grep -v "+" | grep -v "Name" | grep -v "List" | grep -v "(" | grep -v "template" | grep -v "postgres" | grep -v "|" | grep -v ":"`
+
+# TODO: refactor this, only get DB_BACKUP in DBLIST
+if [ ! -z ${DB_BACKUP} ]; then
+  DBLIST=`psql -l | awk '{print $1}' | grep -v "+" | grep -v "Name" | grep -v "List" | grep -v "(" | grep -v "template" | grep -v "postgres" | grep -v "|" | grep -v ":" | grep -w "${DB_BACKUP}"`
+fi
+
 # echo "Databases to backup: ${DBLIST}" >> /var/log/cron.log
 for DB in ${DBLIST}
 do
@@ -40,7 +46,7 @@ do
     else
       echo "FAIL: " $ACTION " - " $(date)
     fi
-  else 
+  else
     echo "DRIVE UPLOAD DISABLED"
   fi
 done

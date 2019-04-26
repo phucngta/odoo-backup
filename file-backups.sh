@@ -17,7 +17,7 @@ if [ $ODOO_FILES -eq 1 ]; then
 
   echo "Backing up /var/lib/odoo"
   ACTION="Create $FILENAME in $MYBACKUPDIR"
-  cp -R /var/lib/odoo /tmp/ && tar -zcf $FILENAME /tmp/odoo && rm -rf /tmp/odoo
+  cp -R /var/lib/odoo /tmp/ && tar -zcf $FILENAME -C /tmp odoo && rm -rf /tmp/odoo
   if [ $? -eq 0 ]; then
     echo "OK: " $ACTION " - " $(date)
   else

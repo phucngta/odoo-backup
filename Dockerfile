@@ -32,4 +32,6 @@ ENV ODOO_FILES 0
 ENV DRIVE_DESTINATION ""
 ENV RCLONE_OPTS="--config /config/rclone.conf"
 
+ADD restore /usr/bin/restore
+
 ENTRYPOINT ["bash", "start.sh"]
