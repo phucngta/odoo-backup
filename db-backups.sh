@@ -31,7 +31,7 @@ for DB in ${DBLIST}
 do
   echo "Backing up $DB"
   FILENAME=${MYBACKUPDIR}/${DUMPPREFIX}_${DB}.${MYDATE}.tar
-  ACTION="Create $FILENAME in /backup"
+  ACTION="Create $FILENAME"
   pg_dump -Ft -C -f ${FILENAME} -O ${DB} && gzip -f ${FILENAME}
   if [ $? -eq 0 ]; then
      echo "OK: " $ACTION " - " $(date)

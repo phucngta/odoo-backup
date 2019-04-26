@@ -10,26 +10,28 @@ DATE=$(date +%d)
 MONTH=$(date +%B)
 YEAR=$(date +%Y)
 
-if [ -z $2 ]
+if [ -z $1 ]
   then
     echo "Error! Database restore not set !"
     exit 2
+else
+  DB_RESTORE=$1
+fi
+
+if [ ! -z $2 ]; then
+  HOUR=$2
 fi
 
 if [ ! -z $3 ]; then
-  HOUR=$3
+  DATE=$3
 fi
 
 if [ ! -z $4 ]; then
-  DATE=$4
+  MONTH=$4
 fi
 
 if [ ! -z $5 ]; then
-  MONTH=$5
-fi
-
-if [ ! -z $6 ]; then
-  YEAR=$6
+  YEAR=$5
 fi
 
 MYBASEDIR=/var/backup
@@ -62,6 +64,7 @@ DB_RESTORE_NAME=$DB_RESTORE.${YEAR}-${MONTH}-${DATE}-${HOUR}
 echo "Restore files..."
 tar xvfz ${FILESTORE} -C /tmp --exclude='odoo.conf' --exclude 'odoo-dev.conf' --exclude 'odoo-debug.conf'
 cp -R /tmp/odoo/filestore/${DB_RESTORE} /var/lib/odoo/filestore/$DB_RESTORE_NAME
+chown -R odoo:odoo /var/lib/odoo/filestore/$DB_RESTORE_NAME
 
 if [ $? -ne 0 ]
   then
@@ -71,10 +74,10 @@ fi
 echo "Files restored"
 
 echo "Create new database ${DB_RESTORE_NAME}"
-createdb -h $PGHOST -U $PGUSER -O $PGUSER $DB_RESTORE_NAME
+PGPASSWORD=$PGPASSWORD createdb -h $PGHOST -U $PGUSER -O $PGUSER $DB_RESTORE_NAME
 
 echo "Restore to new created database ${DB_RESTORE_NAME}"
-gzip -d ${DBFILE} | pg_restore -U $PGUSER -h $PGHOST -d ${DB_RESTORE_NAME}
+gunzip < ${DBFILE} | PGPASSWORD=$PGPASSWORD pg_restore -U $PGUSER -h $PGHOST -d ${DB_RESTORE_NAME}
 
 
 if [ $? -ne 0 ]

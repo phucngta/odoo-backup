@@ -63,12 +63,35 @@ export DRIVE_DESTINATION=$DRIVE_DESTINATION
 export RCLONE_OPTS='$RCLONE_OPTS'
  " > /pgenv.sh
 
+
+
+USER_ID=${LOCAL_USER_ID:-999}
+
+echo "Starting with UID : $USER_ID"
+id -u odoo &> /dev/null || useradd --shell /bin/bash -u $USER_ID -o -c "" -m odoo
+
+# Expose env vars passed to docker
+export PGUSER=$PGUSER
+export PGPASSWORD=$PGPASSWORD
+export PGPORT=$PGPORT
+export PGHOST=$PGHOST
+export PGDATABASE=$PGDATABASE
+export DUMPPREFIX=$DUMPPREFIX
+export ODOO_FILES=$ODOO_FILES
+export DRIVE_DESTINATION=$DRIVE_DESTINATION
+export RCLONE_OPTS='$RCLONE_OPTS'
+
+
 echo "Start script running with these environment options"
 set | grep PG
 
-#configure rclone
-rclone config $RCLONE_OPTS
+BASE_CMD=$(basename $1)
+if [ "$BASE_CMD" = "start" ] ; then
+  #configure rclone
+  rclone config $RCLONE_OPTS
 
-# Now launch cron in then foreground.
+  # Now launch cron in then foreground.
+  cron -f -L 8
+fi
 
-cron -f -L 8
+exec "$@"

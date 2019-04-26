@@ -17,8 +17,8 @@ RUN touch /var/log/cron.log
 ADD db-backups.sh db-backups.sh
 ADD file-backups.sh file-backups.sh
 ADD clean.sh clean.sh
-ADD start.sh start.sh
-RUN chmod +x start.sh
+# ADD start.sh start.sh
+# RUN chmod +x start.sh
 RUN chmod +x file-backups.sh
 RUN chmod +x db-backups.sh
 RUN chmod +x clean.sh
@@ -32,6 +32,10 @@ ENV ODOO_FILES 0
 ENV DRIVE_DESTINATION ""
 ENV RCLONE_OPTS="--config /config/rclone.conf"
 
-ADD restore /usr/bin/restore
+COPY docker-entrypoint.sh /usr/bin/docker-entrypoint.sh
+COPY restore /usr/bin/restore
+RUN chmod +x /usr/bin/docker-entrypoint.sh
+RUN chmod +x /usr/bin/restore
 
-ENTRYPOINT ["bash", "start.sh"]
+ENTRYPOINT ["docker-entrypoint.sh"]
+CMD ["start"]
