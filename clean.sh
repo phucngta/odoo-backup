@@ -16,7 +16,9 @@ cd ${MYBACKUPDIR}
 echo "Cleaning running to $MYBACKUPDIR"
 
 #
+# TODO:
 # Loop through each pg database backing it up
+# Loop through pgdump and filestore
 #
 
   ACTION="Clean $MYBACKUPDIR in /backup"
