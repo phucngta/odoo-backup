@@ -1,4 +1,4 @@
 * * * * * echo 'cron is up' >> /var/log/cron.log 2>&1
 0 */12 * * * /db-backups.sh >> /var/log/cron.log 2>&1
 0 23 * * * /file-backups.sh >> /var/log/cron.log 2>&1
-0 23 10 * * /clean.sh >> /var/log/cron.log 2>&1
+0 23 */14 * * /clean.sh >> /var/log/cron.log 2>&1

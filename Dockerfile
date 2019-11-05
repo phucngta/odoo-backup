@@ -17,11 +17,13 @@ RUN touch /var/log/cron.log
 ADD db-backups.sh db-backups.sh
 ADD file-backups.sh file-backups.sh
 ADD clean.sh clean.sh
+ADD clean_env.sh clean_env.sh
 # ADD start.sh start.sh
 # RUN chmod +x start.sh
 RUN chmod +x file-backups.sh
 RUN chmod +x db-backups.sh
 RUN chmod +x clean.sh
+RUN chmod +x clean_env.sh
 
 COPY odoo-backup-cron /etc/cron.d/odoo-backup-cron
 RUN chmod 0644 /etc/cron.d/odoo-backup-cron
