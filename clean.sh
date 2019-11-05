@@ -34,10 +34,12 @@ CURRENT_BACKUPDIR=${MYBASEDIR}/${CURRENT_YEAR}/${CURRENT_MONTH}
 
 cd ${CURRENT_BACKUPDIR}
 
-ACTION="Clean $CURRENT_BACKUPDIR in /backup"
-(ls -t|head -n ${NUMBER_KEEPED_BACKUPS_CURRENT_YEAR};ls)|sort|uniq -u|xargs rm
-if [ $? -eq 0 ]; then
- echo "OK: " $ACTION " - " $(date)
-else
- echo "FAIL: " $ACTION " - " $(date)
-fi
+echo "Cleaning running to $CURRENT_BACKUPDIR"
+
+    ACTION="Clean $CURRENT_BACKUPDIR in /backup"
+    (ls -t|head -n ${NUMBER_KEEPED_BACKUPS_CURRENT_YEAR};ls)|sort|uniq -u|xargs rm
+    if [ $? -eq 0 ]; then
+     echo "OK: " $ACTION " - " $(date)
+    else
+     echo "FAIL: " $ACTION " - " $(date)
+    fi
