@@ -1,7 +1,7 @@
 FROM golang:1.9.2-stretch
 MAINTAINER federico.facca@martel-innovate.com
 
-RUN go get -u -v github.com/ncw/rclone
+# RUN go get -u -v github.com/ncw/rclone
 RUN go clean
 RUN apt-get update
 RUN apt-get install -y cron postgresql-client-9.6 nano

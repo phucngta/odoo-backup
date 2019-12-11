@@ -88,7 +88,7 @@ set | grep PG
 BASE_CMD=$(basename $1)
 if [ "$BASE_CMD" = "start" ] ; then
   #configure rclone
-  rclone config $RCLONE_OPTS
+#  rclone config $RCLONE_OPTS
 
   # Now launch cron in then foreground.
   cron -f -L 8
